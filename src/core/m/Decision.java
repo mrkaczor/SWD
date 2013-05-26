@@ -5,12 +5,13 @@
 package core.m;
 
 import core.m.i.Element;
+import java.io.Serializable;
 
 /**
  *
  * @author mrkaczor
  */
-public class Decision implements Element {
+public class Decision implements Element, Serializable {
     private String _name;
     
     public Decision(String name) {

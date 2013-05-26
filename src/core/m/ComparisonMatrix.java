@@ -2,12 +2,13 @@ package core.m;
 
 import Jama.Matrix;
 import core.m.i.Element;
+import java.io.Serializable;
 
 /**
  *
  * @author mrkaczor
  */
-public class ComparisonMatrix {
+public class ComparisonMatrix implements Serializable {
     private Element[] _elements;
     private Matrix _values;
     

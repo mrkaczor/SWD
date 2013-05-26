@@ -1,12 +1,13 @@
 package core.m;
 
 import core.m.i.Element;
+import java.io.Serializable;
 
 /**
  *
  * @author mrkaczor
  */
-public class Criterion implements Element {
+public class Criterion implements Element, Serializable {
     private String _name;
     
     public Criterion(String name) {
