@@ -1,11 +1,8 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package core.c;
 
 import core.m.User;
 import core.m.exceptions.UserAuthenticationException;
+import core.m.exceptions.UserRegistrationException;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -23,13 +20,11 @@ public class UserService {
     private User _loggedUser;
 
     // <editor-fold defaultstate="collapsed" desc="Singleton">
-    public static UserService getInstance()
-    {
+    public static UserService getInstance() {
       return InstanceHolder.p_instance;
     }
 
-    private static final class InstanceHolder
-    {
+    private static final class InstanceHolder {
       private static final UserService p_instance = new UserService();
     }
     // </editor-fold>
@@ -38,10 +33,14 @@ public class UserService {
         _loggedUser = null;
     }
     
+    public User getLoggedUser() {
+        return _loggedUser;
+    }
+    
     public void logIn(User user) throws UserAuthenticationException {
         User tmpUser = loadUserProfile(user.getName());
-        if(tmpUser != null) {
-            
+        if(tmpUser != null && checkUserPassword(tmpUser, user.getPassword())) {
+            _loggedUser = tmpUser;
         } else {
             throw new UserAuthenticationException("Błędny login lub hasło!");
         }
@@ -49,23 +48,34 @@ public class UserService {
     
     public void logOut() {
         if(_loggedUser != null) {
-            saveUserProfile(_loggedUser);
+            try {
+                saveUserProfile(_loggedUser);
+                _loggedUser = null;
+            } catch(IOException ex) {
+                System.err.println(ex.getMessage());
+            }
         }
     }
     
-    public void signIn(User newUser) {
+    public void signIn(User newUser) throws UserRegistrationException {
         User tmpUser = loadUserProfile(newUser.getName());
-        if(tmpUser == null && validateUser(tmpUser)) {
-            saveUserProfile(newUser);
-            _loggedUser = newUser;
+        if(tmpUser != null) {
+            throw new UserRegistrationException("Użytkownik o podanej nazwie już istnieje!");
+        }
+        else if(validateUser(tmpUser)) {
+            try {
+                saveUserProfile(newUser);
+                _loggedUser = newUser;
+            } catch(IOException ex) {
+                System.err.println(ex.getMessage());
+            }
         } else {
-            //throw new UserAuthenticationException("Błędny login lub hasło!");
+            throw new UserRegistrationException("Dane użytkownika nie spełniają wymaganych kryteriów!");
         }
     }
     
-    private boolean checkUserPassword(User user, Password password) {
-        //TODO code password check logic here
-        return true;
+    private boolean checkUserPassword(User user, String password) {
+        return user.getPassword().equals(password);
     }
     
     private User loadUserProfile(String username) {
@@ -76,25 +86,22 @@ public class UserService {
             u = (User) in.readObject();
             in.close();
             fileIn.close();
-        } catch (IOException | ClassNotFoundException ex) {
-            System.err.println("elo - "+ex.getMessage());
+        } catch (IOException ex) {
+            return null;
+        } catch(ClassNotFoundException ex) {
+            System.err.println(ex.getMessage());
         }
         return u;
     }
     
-    private void saveUserProfile(User user) {
-        try {
-            //FileOutputStream fileOut = new FileOutputStream(USER_PATH+user.getName()+".ser");
-            File userData = new File(USER_PATH+user.getName()+".ser");
-            userData.createNewFile();
-            FileOutputStream fileOut = new FileOutputStream(userData);
-            ObjectOutputStream out = new ObjectOutputStream(fileOut);
-            out.writeObject(user);
-            out.close();
-            fileOut.close();
-        } catch (IOException ex) {
-            System.err.println(ex.getMessage());
-        }
+    private void saveUserProfile(User user) throws IOException {
+        File userData = new File(USER_PATH+user.getName()+".ser");
+        userData.createNewFile();
+        FileOutputStream fileOut = new FileOutputStream(userData);
+        ObjectOutputStream out = new ObjectOutputStream(fileOut);
+        out.writeObject(user);
+        out.close();
+        fileOut.close();
     }
     
     private boolean validateUser(User user) {

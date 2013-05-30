@@ -45,5 +45,20 @@ public class ComparisonMatrix implements Serializable {
         }
         return -1;
     }
-        
+    
+    @Override
+    public String toString() {
+        String matrix = "";
+        for(int i=0;i<_values.getRowDimension();i++) {
+            for(int j=0;j<_values.getColumnDimension();j++) {
+                String value = Double.toString(_values.get(i, j));
+                if(value.length()>4) {
+                    value = value.substring(0, 4);
+                }
+                matrix += value+"\t";
+            }
+            matrix += "\n";
+        }
+        return matrix;
+    }
 }
