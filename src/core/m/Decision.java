@@ -5,7 +5,11 @@
 package core.m;
 
 import core.m.i.Element;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.io.Serializable;
+import javax.imageio.ImageIO;
 
 /**
  *
@@ -13,9 +17,16 @@ import java.io.Serializable;
  */
 public class Decision implements Element, Serializable {
     private String _name;
+    private String _image;
     
     public Decision(String name) {
         _name = name;
+        _image = null;
+    }
+    
+    public Decision(String name, String imagePath) {
+        _name = name;
+        _image = imagePath;
     }
     
     @Override
@@ -25,5 +36,15 @@ public class Decision implements Element, Serializable {
     
     public void setName(String name) {
         _name = name;
+    }
+    
+    public BufferedImage getImage() throws IOException
+    {
+        return ImageIO.read(new File(_image));
+    }
+    
+    public String getImagePath()
+    {
+        return _image;
     }
 }

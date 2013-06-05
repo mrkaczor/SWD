@@ -28,7 +28,7 @@ public class ComparisonMatrix implements Serializable {
         return _values;
     }
     
-    public void setComparisonValue(Element e1, Element e2, int value) {
+    public void setComparisonValue(Element e1, Element e2, double value) {
         int e1id = getElementId(e1);
         int e2id = getElementId(e2);
         if(e1id!=-1 && e2id!=-1) {
