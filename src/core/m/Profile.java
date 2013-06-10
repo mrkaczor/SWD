@@ -1,5 +1,6 @@
 package core.m;
 
+import core.c.DecisionsController;
 import core.m.i.Element;
 import java.io.Serializable;
 import java.util.LinkedHashMap;
@@ -9,28 +10,24 @@ import java.util.Map;
  *
  * @author mrkaczor
  */
-public class User implements Serializable {
+public class Profile implements Serializable {
     private final String _username;
-    private String _password;
     private ComparisonMatrix _criterionsPrefereces;
     private Map<Criterion, ComparisonMatrix> _decisionsPreferences;
     private Decision[] _decisions;
     private Criterion[] _criterions;
-    
-    public User(String username, String password) {
+    private String _decisionsDirectory;
+                
+    public Profile(String username) {
         _username = username;
-        _password = password;
         _criterionsPrefereces = null;
         _decisionsPreferences = new LinkedHashMap<>();
         _decisions = null;
+        _decisionsDirectory = "images\\";
     }
     
     public String getName() {
         return _username;
-    }
-    
-    public String getPassword() {
-        return _password;
     }
     
     public ComparisonMatrix getCriterionsPreferences() {
@@ -61,6 +58,16 @@ public class User implements Serializable {
     public Decision[] getDecisions()
     {
         return _decisions;
+    }
+    
+    public void setDecisionsFolder(String path)
+    {
+        _decisionsDirectory = path;
+    }
+    
+    public String getDecisionsFolder()
+    {
+        return _decisionsDirectory;
     }
 
     public void setCriterions(Criterion[] criterions) {

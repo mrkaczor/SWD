@@ -15,8 +15,6 @@ import java.util.List;
  * @author Mateusz
  */
 public class DecisionsController {
-    private String imagesPath = "images\\";
-    
     // <editor-fold defaultstate="collapsed" desc="Singleton">
     public static DecisionsController getInstance() {
       return DecisionsController.InstanceHolder.p_instance;
@@ -27,7 +25,7 @@ public class DecisionsController {
     }
     // </editor-fold>
     
-    public List<Decision> loadDecisions()
+    public List<Decision> loadDecisions(String imagesPath)
     {
     List<Decision> decisions = new LinkedList<>();
         for (File file : new File(imagesPath).listFiles()) {

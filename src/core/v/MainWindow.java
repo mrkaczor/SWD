@@ -1,16 +1,19 @@
 package core.v;
 
+import Jama.Matrix;
 import core.c.DecisionsController;
 import core.c.Main;
-import core.c.UserService;
+import core.c.ProfilesService;
 import core.m.ComparisonMatrix;
 import core.m.Criterion;
 import core.m.Decision;
-import core.m.User;
+import core.m.Profile;
 import core.m.exceptions.UserAuthenticationException;
 import core.m.exceptions.UserRegistrationException;
 import core.m.i.Element;
 import java.awt.Component;
+import java.awt.Dimension;
+import java.awt.FlowLayout;
 import java.awt.Insets;
 import java.awt.Point;
 import java.awt.event.ActionEvent;
@@ -54,22 +57,17 @@ public class MainWindow extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        createUserDialog = new javax.swing.JDialog();
+        createProfileDialog = new javax.swing.JDialog();
         createUserDialogCancelButton = new javax.swing.JButton();
         createUserDialogOkButton = new javax.swing.JButton();
         createUserDialogUserNameField = new javax.swing.JTextField();
         createUserDialogUserNameLabel = new javax.swing.JLabel();
-        createUserDialogPasswordLabel = new javax.swing.JLabel();
-        createUserDialogConfirmPasswordLabel = new javax.swing.JLabel();
-        createUserDialogConfirmPasswordField = new javax.swing.JPasswordField();
-        createUserDialogPasswordField = new javax.swing.JPasswordField();
-        logInDialog = new javax.swing.JDialog();
-        logInDialogUserNameLabel = new javax.swing.JLabel();
-        logInDialogPasswordLabel = new javax.swing.JLabel();
-        logInDialogUserNameField = new javax.swing.JTextField();
+        loadProfileDialog = new javax.swing.JDialog();
         logInDialogCancelButton = new javax.swing.JButton();
         logInDialogOkButton = new javax.swing.JButton();
-        logInDialogPasswordField = new javax.swing.JPasswordField();
+        jLabel1 = new javax.swing.JLabel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        jList1 = new javax.swing.JList();
         setCriterionsDialog = new javax.swing.JDialog();
         jPanel3 = new javax.swing.JPanel();
         jPanel5 = new javax.swing.JPanel();
@@ -80,6 +78,10 @@ public class MainWindow extends javax.swing.JFrame {
         setCriterionsDialogCancelButton = new javax.swing.JButton();
         setCriterionsDialogOkButton = new javax.swing.JButton();
         setCriterionsDialogSetValuesButton = new javax.swing.JButton();
+        logInOutMenuItem = new javax.swing.JMenuItem();
+        jFileChooser1 = new javax.swing.JFileChooser();
+        resultDialog = new javax.swing.JDialog();
+        resultDialogInnerPanel = new javax.swing.JPanel();
         comparisonPanel = new javax.swing.JPanel();
         jPanel4 = new javax.swing.JPanel();
         nextButton = new javax.swing.JButton();
@@ -91,7 +93,6 @@ public class MainWindow extends javax.swing.JFrame {
         calculateMenuItem = new javax.swing.JMenuItem();
         exitMenuOption = new javax.swing.JMenuItem();
         userMenu = new javax.swing.JMenu();
-        logInOutMenuItem = new javax.swing.JMenuItem();
         createUserMenuItem = new javax.swing.JMenuItem();
         userMenuSeparator = new javax.swing.JPopupMenu.Separator();
         saveSessionMenuItem = new javax.swing.JMenuItem();
@@ -100,12 +101,12 @@ public class MainWindow extends javax.swing.JFrame {
         setCriterionsMenuItem = new javax.swing.JMenuItem();
         jMenuItem1 = new javax.swing.JMenuItem();
 
-        createUserDialog.setLocationByPlatform(true);
-        createUserDialog.setMaximumSize(new java.awt.Dimension(325, 200));
-        createUserDialog.setMinimumSize(new java.awt.Dimension(325, 200));
-        createUserDialog.setModalityType(java.awt.Dialog.ModalityType.APPLICATION_MODAL);
-        createUserDialog.setPreferredSize(new java.awt.Dimension(325, 200));
-        createUserDialog.setResizable(false);
+        createProfileDialog.setLocationByPlatform(true);
+        createProfileDialog.setMaximumSize(new java.awt.Dimension(325, 200));
+        createProfileDialog.setMinimumSize(new java.awt.Dimension(325, 200));
+        createProfileDialog.setModalityType(java.awt.Dialog.ModalityType.APPLICATION_MODAL);
+        createProfileDialog.setPreferredSize(new java.awt.Dimension(325, 200));
+        createProfileDialog.setResizable(false);
 
         createUserDialogCancelButton.setText("Cancel");
         createUserDialogCancelButton.addActionListener(new java.awt.event.ActionListener() {
@@ -124,66 +125,43 @@ public class MainWindow extends javax.swing.JFrame {
             }
         });
 
-        createUserDialogUserNameLabel.setText("User name");
+        createUserDialogUserNameLabel.setText("Profile name");
 
-        createUserDialogPasswordLabel.setText("Password");
-
-        createUserDialogConfirmPasswordLabel.setText("Confirm password");
-
-        javax.swing.GroupLayout createUserDialogLayout = new javax.swing.GroupLayout(createUserDialog.getContentPane());
-        createUserDialog.getContentPane().setLayout(createUserDialogLayout);
-        createUserDialogLayout.setHorizontalGroup(
-            createUserDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(createUserDialogLayout.createSequentialGroup()
+        javax.swing.GroupLayout createProfileDialogLayout = new javax.swing.GroupLayout(createProfileDialog.getContentPane());
+        createProfileDialog.getContentPane().setLayout(createProfileDialogLayout);
+        createProfileDialogLayout.setHorizontalGroup(
+            createProfileDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(createProfileDialogLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(createUserDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(createUserDialogLayout.createSequentialGroup()
+                .addGroup(createProfileDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(createProfileDialogLayout.createSequentialGroup()
                         .addGap(0, 165, Short.MAX_VALUE)
                         .addComponent(createUserDialogOkButton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(10, 10, 10)
                         .addComponent(createUserDialogCancelButton))
-                    .addGroup(createUserDialogLayout.createSequentialGroup()
-                        .addGroup(createUserDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(createUserDialogUserNameLabel)
-                            .addComponent(createUserDialogPasswordLabel)
-                            .addComponent(createUserDialogConfirmPasswordLabel))
-                        .addGap(30, 30, 30)
-                        .addGroup(createUserDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(createUserDialogUserNameField)
-                            .addComponent(createUserDialogConfirmPasswordField)
-                            .addComponent(createUserDialogPasswordField))))
+                    .addGroup(createProfileDialogLayout.createSequentialGroup()
+                        .addComponent(createUserDialogUserNameLabel)
+                        .addGap(65, 65, 65)
+                        .addComponent(createUserDialogUserNameField)))
                 .addContainerGap())
         );
-        createUserDialogLayout.setVerticalGroup(
-            createUserDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, createUserDialogLayout.createSequentialGroup()
+        createProfileDialogLayout.setVerticalGroup(
+            createProfileDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, createProfileDialogLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(createUserDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addGroup(createProfileDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(createUserDialogUserNameField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(createUserDialogUserNameLabel))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(createUserDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(createUserDialogPasswordField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(createUserDialogPasswordLabel))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(createUserDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(createUserDialogConfirmPasswordField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(createUserDialogConfirmPasswordLabel))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 83, Short.MAX_VALUE)
-                .addGroup(createUserDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 135, Short.MAX_VALUE)
+                .addGroup(createProfileDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(createUserDialogCancelButton)
                     .addComponent(createUserDialogOkButton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap())
         );
 
-        logInDialog.setMinimumSize(new java.awt.Dimension(273, 150));
-        logInDialog.setModalityType(java.awt.Dialog.ModalityType.APPLICATION_MODAL);
-
-        logInDialogUserNameLabel.setText("User name");
-
-        logInDialogPasswordLabel.setText("Password");
-
-        logInDialogUserNameField.setPreferredSize(new java.awt.Dimension(6, 20));
+        loadProfileDialog.setMinimumSize(new java.awt.Dimension(273, 300));
+        loadProfileDialog.setModalityType(java.awt.Dialog.ModalityType.APPLICATION_MODAL);
+        loadProfileDialog.setPreferredSize(new java.awt.Dimension(160, 300));
 
         logInDialogCancelButton.setText("Cancel");
         logInDialogCancelButton.addActionListener(new java.awt.event.ActionListener() {
@@ -202,41 +180,43 @@ public class MainWindow extends javax.swing.JFrame {
             }
         });
 
-        javax.swing.GroupLayout logInDialogLayout = new javax.swing.GroupLayout(logInDialog.getContentPane());
-        logInDialog.getContentPane().setLayout(logInDialogLayout);
-        logInDialogLayout.setHorizontalGroup(
-            logInDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(logInDialogLayout.createSequentialGroup()
+        jLabel1.setText("Select profile");
+
+        jList1.setModel(new javax.swing.AbstractListModel() {
+            String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
+            public int getSize() { return strings.length; }
+            public Object getElementAt(int i) { return strings[i]; }
+        });
+        jList1.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        jScrollPane1.setViewportView(jList1);
+
+        javax.swing.GroupLayout loadProfileDialogLayout = new javax.swing.GroupLayout(loadProfileDialog.getContentPane());
+        loadProfileDialog.getContentPane().setLayout(loadProfileDialogLayout);
+        loadProfileDialogLayout.setHorizontalGroup(
+            loadProfileDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(loadProfileDialogLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(logInDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(logInDialogLayout.createSequentialGroup()
-                        .addGroup(logInDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(logInDialogUserNameLabel)
-                            .addComponent(logInDialogPasswordLabel))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addGroup(logInDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(logInDialogUserNameField, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(logInDialogPasswordField, javax.swing.GroupLayout.DEFAULT_SIZE, 179, Short.MAX_VALUE)))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, logInDialogLayout.createSequentialGroup()
-                        .addGap(0, 113, Short.MAX_VALUE)
+                .addGroup(loadProfileDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(loadProfileDialogLayout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
                         .addComponent(logInDialogOkButton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(logInDialogCancelButton)))
+                        .addComponent(logInDialogCancelButton))
+                    .addGroup(loadProfileDialogLayout.createSequentialGroup()
+                        .addComponent(jLabel1)
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addComponent(jScrollPane1))
                 .addContainerGap())
         );
-        logInDialogLayout.setVerticalGroup(
-            logInDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(logInDialogLayout.createSequentialGroup()
+        loadProfileDialogLayout.setVerticalGroup(
+            loadProfileDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(loadProfileDialogLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(logInDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(logInDialogUserNameField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(logInDialogUserNameLabel))
+                .addComponent(jLabel1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(logInDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(logInDialogPasswordLabel)
-                    .addComponent(logInDialogPasswordField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 15, Short.MAX_VALUE)
-                .addGroup(logInDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 155, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(loadProfileDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(logInDialogCancelButton)
                     .addComponent(logInDialogOkButton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap())
@@ -273,7 +253,7 @@ public class MainWindow extends javax.swing.JFrame {
         jPanel3.add(jPanel5, java.awt.BorderLayout.LINE_START);
 
         setCriterionsDialogCriterionPreferencePanel.setBorder(javax.swing.BorderFactory.createEtchedBorder());
-        setCriterionsDialogCriterionPreferencePanel.setLayout(new java.awt.GridLayout(5, 5));
+        setCriterionsDialogCriterionPreferencePanel.setLayout(new javax.swing.BoxLayout(setCriterionsDialogCriterionPreferencePanel, javax.swing.BoxLayout.Y_AXIS));
         jPanel3.add(setCriterionsDialogCriterionPreferencePanel, java.awt.BorderLayout.CENTER);
 
         jPanel7.setMaximumSize(new java.awt.Dimension(32767, 100));
@@ -318,7 +298,7 @@ public class MainWindow extends javax.swing.JFrame {
                 .addComponent(setCriterionsDialogAddCriterionButton, javax.swing.GroupLayout.PREFERRED_SIZE, 73, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(setCriterionsDialogSetValuesButton)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 381, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 430, Short.MAX_VALUE)
                 .addComponent(setCriterionsDialogOkButton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(setCriterionsDialogCancelButton)
@@ -353,6 +333,26 @@ public class MainWindow extends javax.swing.JFrame {
                 .addContainerGap()
                 .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, 348, Short.MAX_VALUE)
                 .addContainerGap())
+        );
+
+        logInOutMenuItem.setText("Log in");
+        logInOutMenuItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                logInOutMenuItemActionPerformed(evt);
+            }
+        });
+
+        resultDialog.setMinimumSize(new java.awt.Dimension(400, 300));
+
+        javax.swing.GroupLayout resultDialogLayout = new javax.swing.GroupLayout(resultDialog.getContentPane());
+        resultDialog.getContentPane().setLayout(resultDialogLayout);
+        resultDialogLayout.setHorizontalGroup(
+            resultDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(resultDialogInnerPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 568, Short.MAX_VALUE)
+        );
+        resultDialogLayout.setVerticalGroup(
+            resultDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(resultDialogInnerPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 354, Short.MAX_VALUE)
         );
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -441,15 +441,7 @@ public class MainWindow extends javax.swing.JFrame {
 
         userMenu.setText("User");
 
-        logInOutMenuItem.setText("Log in");
-        logInOutMenuItem.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                logInOutMenuItemActionPerformed(evt);
-            }
-        });
-        userMenu.add(logInOutMenuItem);
-
-        createUserMenuItem.setText("Create user");
+        createUserMenuItem.setText("Create profile");
         createUserMenuItem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 createUserMenuItemActionPerformed(evt);
@@ -458,7 +450,7 @@ public class MainWindow extends javax.swing.JFrame {
         userMenu.add(createUserMenuItem);
         userMenu.add(userMenuSeparator);
 
-        saveSessionMenuItem.setText("Save session");
+        saveSessionMenuItem.setText("Save profile");
         saveSessionMenuItem.setEnabled(false);
         saveSessionMenuItem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -467,8 +459,7 @@ public class MainWindow extends javax.swing.JFrame {
         });
         userMenu.add(saveSessionMenuItem);
 
-        loadSessionMenuItem.setText("Load session");
-        loadSessionMenuItem.setEnabled(false);
+        loadSessionMenuItem.setText("Load profile");
         loadSessionMenuItem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 loadSessionMenuItemActionPerformed(evt);
@@ -528,186 +519,73 @@ public class MainWindow extends javax.swing.JFrame {
 
     private void createUserMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_createUserMenuItemActionPerformed
         // TODO add your handling code here:
-        createUserDialog.setVisible(true);
+        createProfileDialog.setVisible(true);
     }//GEN-LAST:event_createUserMenuItemActionPerformed
 
-    private void createUserDialogCancelButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_createUserDialogCancelButtonActionPerformed
-        // TODO add your handling code here:
-        createUserDialog.dispose();
-        createUserDialogUserNameField.setText("");
-        createUserDialogPasswordField.setText("");
-        createUserDialogConfirmPasswordField.setText("");
-    }//GEN-LAST:event_createUserDialogCancelButtonActionPerformed
-
-    private void createUserDialogOkButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_createUserDialogOkButtonActionPerformed
-        // TODO add your handling code here:
-        if (createUserDialogUserNameField.getText().length() != 0) {
-            createUserDialogUserNameLabel.setForeground(new java.awt.Color(0, 0, 0));
-
-            if (createUserDialogPasswordField.getText().length() != 0) {
-                createUserDialogPasswordLabel.setForeground(new java.awt.Color(0, 0, 0));
-                createUserDialogConfirmPasswordLabel.setForeground(new java.awt.Color(0, 0, 0));
-
-                if (createUserDialogConfirmPasswordField.getText().length() != 0) {
-
-                    if (createUserDialogPasswordField.getText().equals(createUserDialogConfirmPasswordField.getText())) {
-                        createUserDialogConfirmPasswordLabel.setForeground(new java.awt.Color(0, 0, 0));
-
-                        try {
-                            UserService.getInstance().signIn(new User(createUserDialogUserNameField.getText(), createUserDialogPasswordField.getText()));
-
-                            try {
-                                UserService.getInstance().logIn(new User(createUserDialogUserNameField.getText(), new String(createUserDialogPasswordField.getPassword())));
-                            } catch (UserAuthenticationException ex) {
-                            }
-
-                            User user = UserService.getInstance().getLoggedUser();
-
-                            //CRITERIONS MATRIX
-                            Criterion[] criterions = new Criterion[3];
-                            criterions[0] = new Criterion("Nadwozie");
-                            criterions[1] = new Criterion("Kolor");
-                            criterions[2] = new Criterion("Segment");
-                            ComparisonMatrix criterionsMatrix = new ComparisonMatrix(criterions);
-                            criterionsMatrix.setComparisonValue(criterions[1], criterions[0], 3);
-                            criterionsMatrix.setComparisonValue(criterions[2], criterions[0], 5);
-                            criterionsMatrix.setComparisonValue(criterions[2], criterions[1], 3);
-                            user.setCriterionsPreferences(criterionsMatrix);
-                            user.setCriterions(criterions);
-
-                            //DECISIONS
-                            Decision[] decisions = new Decision[0];
-                            decisions = (Decision[]) DecisionsController.getInstance().loadDecisions().toArray(decisions);
-
-                            user.setDecisions(decisions);
-
-
-                            for (Element criterion : criterions) {
-                                ComparisonMatrix comparisonMatrix = new ComparisonMatrix(decisions);
-
-                                for (int i = 0; i < decisions.length; ++i) {
-                                    for (int j = i + 1; j < decisions.length; ++j) {
-                                        comparisonMatrix.setComparisonValue(decisions[i], decisions[j], 1);
-                                    }
-                                }
-
-                                user.setDecisionsPreferences((Criterion) criterion, comparisonMatrix);
-                            }
-
-                            setComparisonPairs();
-                            comparePair(0);
-
-                            saveSessionMenuItem.setEnabled(true);
-                            loadSessionMenuItem.setEnabled(true);
-                            setCriterionsMenuItem.setEnabled(true);
-                            createUserDialogUserNameField.setText("");
-                            createUserDialogPasswordField.setText("");
-                            createUserDialogConfirmPasswordField.setText("");
-                            calculateMenuItem.setEnabled(true);
-                            logInOutMenuItem.setText("Log out");
-
-                            try {
-                                UserService.getInstance().saveUserProfile();
-                            } catch (IOException ex) {
-                                Logger.getLogger(MainWindow.class.getName()).log(Level.SEVERE, null, ex);
-                            }
-
-                            createUserDialog.dispose();
-                        } catch (UserRegistrationException ex) {
-                            Logger.getLogger(MainWindow.class.getName()).log(Level.SEVERE, null, ex);
-                            createUserDialogUserNameLabel.setForeground(new java.awt.Color(255, 0, 0));
-                        }
-                    } else {
-                        createUserDialogPasswordLabel.setForeground(new java.awt.Color(255, 0, 0));
-                        createUserDialogConfirmPasswordLabel.setForeground(new java.awt.Color(255, 0, 0));
-                    }
-                } else {
-                    createUserDialogConfirmPasswordLabel.setForeground(new java.awt.Color(255, 0, 0));
-                }
-            } else {
-                createUserDialogPasswordLabel.setForeground(new java.awt.Color(255, 0, 0));
-            }
-        } else {
-            createUserDialogUserNameLabel.setForeground(new java.awt.Color(255, 0, 0));
-        }
-    }//GEN-LAST:event_createUserDialogOkButtonActionPerformed
-
     private void logInOutMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_logInOutMenuItemActionPerformed
-        // TODO add your handling code here:
-        if (UserService.getInstance().getLoggedUser() == null) {
-            logInDialog.setVisible(true);
-        } else {
-            UserService.getInstance().logOut();
-            saveSessionMenuItem.setEnabled(false);
-            loadSessionMenuItem.setEnabled(false);
-            setCriterionsMenuItem.setEnabled(false);
-            logInOutMenuItem.setText("Log in");
-            calculateMenuItem.setEnabled(false);
-            leftImagePanel.setImage(null);
-            rightImagePanel.setImage(null);
-            comparisonPanel.removeAll();
-            this.revalidate();
-            this.repaint();
-        }
     }//GEN-LAST:event_logInOutMenuItemActionPerformed
 
     private void logInDialogOkButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_logInDialogOkButtonActionPerformed
-        // TODO add your handling code here:
 
-        if (logInDialogUserNameField.getText().length() != 0) {
-            logInDialogUserNameLabel.setForeground(new java.awt.Color(0, 0, 0));
-
-            if (logInDialogPasswordField.getPassword().length != 0) {
-                logInDialogPasswordLabel.setForeground(new java.awt.Color(0, 0, 0));
-                try {
-                    UserService.getInstance().logIn(new User(logInDialogUserNameField.getText(), new String(logInDialogPasswordField.getPassword())));
-
-                    setComparisonPairs();
-                    comparePair(0);
-
-                    saveSessionMenuItem.setEnabled(true);
-                    loadSessionMenuItem.setEnabled(true);
-                    setCriterionsMenuItem.setEnabled(true);
-                    logInOutMenuItem.setText("Log out");
-                    logInDialogUserNameField.setText("");
-                    logInDialogPasswordField.setText("");
-                    calculateMenuItem.setEnabled(true);
-                    logInDialog.dispose();
-                } catch (UserAuthenticationException ex) {
-                    logInDialogPasswordLabel.setForeground(new java.awt.Color(255, 0, 0));
-                    logInDialogUserNameLabel.setForeground(new java.awt.Color(255, 0, 0));
-                }
-
-            } else {
-                logInDialogPasswordLabel.setForeground(new java.awt.Color(255, 0, 0));
-            }
-        } else {
-            logInDialogUserNameLabel.setForeground(new java.awt.Color(255, 0, 0));
-        }
+        ProfilesService.getInstance().loadProfile((String) jList1.getSelectedValue());
+        setComparisonPairs();
+        comparePair(0);
+        previousButton.setEnabled(false);
+        nextButton.setEnabled(true);
+        this.revalidate();
+        this.repaint();
+        loadProfileDialog.dispose();
+        saveSessionMenuItem.setEnabled(true);
+        calculateMenuItem.setEnabled(true);
+        setCriterionsMenuItem.setEnabled(true);
     }//GEN-LAST:event_logInDialogOkButtonActionPerformed
 
     private void logInDialogCancelButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_logInDialogCancelButtonActionPerformed
-        // TODO add your handling code here:
-        logInDialog.dispose();
-        logInDialogUserNameField.setText("");
-        logInDialogPasswordField.setText("");
+//        // TODO add your handling code here:
+//        logInDialog.dispose();
+//        logInDialogUserNameField.setText("");
+//        logInDialogPasswordField.setText("");
+        loadProfileDialog.dispose();
     }//GEN-LAST:event_logInDialogCancelButtonActionPerformed
 
     private void calculateMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_calculateMenuItemActionPerformed
         // TODO add your handling code here:
-        Criterion[] criterions = UserService.getInstance().getLoggedUser().getCriterions();
+        resultDialogInnerPanel.removeAll();
+        Criterion[] criterions = ProfilesService.getInstance().getCurrentProfile().getCriterions();
 
         for (int i = 0; i < criterions.length; ++i) {
-            UserService.getInstance().getLoggedUser().setDecisionsPreferences(criterions[i], comparisonMatrixes[i]);
+            ProfilesService.getInstance().getCurrentProfile().setDecisionsPreferences(criterions[i], comparisonMatrixes[i]);
         }
 
-        Main.calcUserChoice();
+        Matrix result = Main.calcUserChoice();
+
+        double[] resultArray = result.getRowPackedCopy();
+
+        double maxValue = 0;
+        for (double value : resultArray) {
+            maxValue = value > maxValue ? value : maxValue;
+        }
+
+        for (int i = 0; i < resultArray.length; ++i) {
+            if (resultArray[i] == maxValue) {
+                ImagePanel p = new ImagePanel();
+                try {
+                    p.setImage(ProfilesService.getInstance().getCurrentProfile().getDecisions()[i].getImage());
+                } catch (IOException ex) {
+                    Logger.getLogger(MainWindow.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                resultDialogInnerPanel.add(p);
+            }
+        }
+        resultDialog.setVisible(true);
+        resultDialog.repaint();
+        resultDialog.revalidate();
     }//GEN-LAST:event_calculateMenuItemActionPerformed
 
     private void saveSessionMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveSessionMenuItemActionPerformed
         try {
             // TODO add your handling code here:
-            UserService.getInstance().saveUserProfile();
+            ProfilesService.getInstance().saveProfile();
         } catch (IOException ex) {
             Logger.getLogger(MainWindow.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -715,13 +593,20 @@ public class MainWindow extends javax.swing.JFrame {
 
     private void loadSessionMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loadSessionMenuItemActionPerformed
         // TODO add your handling code here:
-        UserService.getInstance().loadUserProfile();
-        setComparisonPairs();
-        comparePair(0);
-        previousButton.setEnabled(false);
-        nextButton.setEnabled(true);
-        this.revalidate();
-        this.repaint();
+        jList1.setModel(new javax.swing.AbstractListModel() {
+            String[] strings = ProfilesService.getInstance().getProfilesNames();
+
+            public int getSize() {
+                return strings.length;
+            }
+
+            public Object getElementAt(int i) {
+                return strings[i];
+            }
+        });
+
+        jList1.setSelectedIndex(0);
+        loadProfileDialog.setVisible(true);
     }//GEN-LAST:event_loadSessionMenuItemActionPerformed
 
     private void exitMenuOptionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exitMenuOptionActionPerformed
@@ -767,7 +652,7 @@ public class MainWindow extends javax.swing.JFrame {
         setCriterionsDialogCriterionsPanel.removeAll();
         setCriterionsDialogCriterionPreferencePanel.removeAll();
 
-        for (Element e : UserService.getInstance().getLoggedUser().getCriterions()) {
+        for (Element e : ProfilesService.getInstance().getCurrentProfile().getCriterions()) {
             JPanel panel = new JPanel();
             JTextField textField = new JTextField(e.getName());
             JButton button = new JButton("x");
@@ -800,6 +685,7 @@ public class MainWindow extends javax.swing.JFrame {
         }
 
         setCriterionsDialog.setVisible(true);
+        setCriterionsDialogCancelButton.setEnabled(true);
     }//GEN-LAST:event_setCriterionsMenuItemActionPerformed
 
     private void setCriterionsDialogCancelButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_setCriterionsDialogCancelButtonActionPerformed
@@ -809,6 +695,7 @@ public class MainWindow extends javax.swing.JFrame {
 
     private void setCriterionsDialogSetValuesButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_setCriterionsDialogSetValuesButtonActionPerformed
         // TODO add your handling code here:
+        setCriterionsDialogCancelButton.setEnabled(false);
         List<Criterion> criterions = new LinkedList<>();
 
         for (Component component : setCriterionsDialogCriterionsPanel.getComponents()) {
@@ -824,31 +711,47 @@ public class MainWindow extends javax.swing.JFrame {
 
         Criterion[] criterionsArray = new Criterion[0];
         criterionsArray = criterions.toArray(criterionsArray);
-        UserService.getInstance().getLoggedUser().setCriterions(criterionsArray);
+        ProfilesService.getInstance().getCurrentProfile().setCriterions(criterionsArray);
 
-        setCriterionsDialogCriterionPreferencePanel.setLayout(new java.awt.GridLayout(criterionsArray.length + 1, criterionsArray.length + 1));
-
-        setCriterionsDialogCriterionPreferencePanel.add(new JLabel());
-
-        for (Criterion criterion : criterionsArray) {
-            setCriterionsDialogCriterionPreferencePanel.add(new JLabel(criterion.getName()));
-        }
 
         for (int i = 0; i < criterionsArray.length; ++i) {
-            setCriterionsDialogCriterionPreferencePanel.add(new JLabel(criterionsArray[i].getName()));
-
-            for (int j = 0; j <= i; ++j) {
-                JTextField tf = new JTextField();
-                if (i == j) {
-                    tf.setText("1");
-                }
-                tf.setEditable(false);
-                setCriterionsDialogCriterionPreferencePanel.add(tf);
-            }
             for (int j = i + 1; j < criterionsArray.length; ++j) {
-                JTextField tf = new JTextField();
-                tf.setName(criterionsArray[i].getName() + criterionsArray[j].getName());
-                setCriterionsDialogCriterionPreferencePanel.add(tf);
+
+                javax.swing.JSlider jSlider;
+                javax.swing.JLabel jLabel1;
+                javax.swing.JLabel jLabel2;
+
+                jSlider = new javax.swing.JSlider();
+                jLabel1 = new javax.swing.JLabel();
+                jLabel2 = new javax.swing.JLabel();
+
+                jSlider.setMajorTickSpacing(1);
+                jSlider.setMaximum(9);
+                jSlider.setMinimum(1);
+                jSlider.setMinorTickSpacing(1);
+                jSlider.setPaintTicks(true);
+                jSlider.setSnapToTicks(true);
+
+                jSlider.setValue(5);
+
+                jSlider.setName(criterionsArray[i].getName() + criterionsArray[j].getName());
+
+                jSlider.setPreferredSize(new Dimension(200, 25));
+                jSlider.setMinimumSize(new Dimension(200, 25));
+                jSlider.setMaximumSize(new Dimension(200, 25));
+
+                jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+                jLabel1.setText(criterionsArray[i].getName());
+                jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+                jLabel2.setText(criterionsArray[j].getName());
+
+                JPanel panel = new JPanel();
+
+
+                panel.add(jLabel1);
+                panel.add(jSlider);
+                panel.add(jLabel2);
+                setCriterionsDialogCriterionPreferencePanel.add(panel);
             }
         }
 
@@ -858,20 +761,76 @@ public class MainWindow extends javax.swing.JFrame {
 
     private void setCriterionsDialogOkButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_setCriterionsDialogOkButtonActionPerformed
         // TODO add your handling code here:
-        Criterion[] criterions = UserService.getInstance().getLoggedUser().getCriterions();
-        Decision[] decisions = UserService.getInstance().getLoggedUser().getDecisions();
+        Profile currentProfile = ProfilesService.getInstance().getCurrentProfile();
+        Criterion[] criterions = currentProfile.getCriterions();
+        Decision[] decisions = currentProfile.getDecisions();
         ComparisonMatrix comparisonMatrix = new ComparisonMatrix(criterions);
 
 
         for (int i = 0; i < criterions.length; ++i) {
 
             for (int j = i + 1; j < criterions.length; ++j) {
-                JTextField tf = (JTextField) findComponentByName(criterions[i].getName() + criterions[j].getName(), setCriterionsDialogCriterionPreferencePanel);
-                double preference = Double.valueOf(tf.getText());
-                comparisonMatrix.setComparisonValue(criterions[i], criterions[j], preference);
+                JSlider slider = (JSlider) findComponentByName(criterions[i].getName() + criterions[j].getName(), setCriterionsDialogCriterionPreferencePanel);
+                double value;
+
+                if (slider != null) {
+                    switch (slider.getValue()) {
+                        case 9: {
+                            value = 1.0 / 9;
+                        }
+                        break;
+
+                        case 8: {
+                            value = 1.0 / 7;
+                        }
+                        break;
+
+                        case 7: {
+                            value = 1.0 / 5;
+                        }
+                        break;
+
+                        case 6: {
+                            value = 1.0 / 3;
+                        }
+                        break;
+
+                        case 5: {
+                            value = 1.0;
+                        }
+                        break;
+
+                        case 4: {
+                            value = 3.0;
+                        }
+                        break;
+
+                        case 3: {
+                            value = 5.0;
+                        }
+                        break;
+
+                        case 2: {
+                            value = 7.0;
+                        }
+                        break;
+
+                        case 1: {
+                            value = 9.0;
+                        }
+                        break;
+
+                        default: {
+                            value = 1.0;
+                        }
+                        break;
+                    }
+
+                    comparisonMatrix.setComparisonValue(criterions[i], criterions[j], value);
+                }
             }
         }
-        UserService.getInstance().getLoggedUser().setCriterionsPreferences(comparisonMatrix);
+        currentProfile.setCriterionsPreferences(comparisonMatrix);
 
 
         for (Element criterion : criterions) {
@@ -883,7 +842,7 @@ public class MainWindow extends javax.swing.JFrame {
                 }
             }
 
-            UserService.getInstance().getLoggedUser().setDecisionsPreferences((Criterion) criterion, comparisonMatrix);
+            currentProfile.setDecisionsPreferences((Criterion) criterion, comparisonMatrix);
         }
 
         setComparisonPairs();
@@ -914,17 +873,97 @@ public class MainWindow extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_previousButtonActionPerformed
 
+    private void createUserDialogOkButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_createUserDialogOkButtonActionPerformed
+        // TODO add your handling code here:
+        if (createUserDialogUserNameField.getText().length() != 0) {
+
+            try {
+                ProfilesService.getInstance().createProfile(new Profile(createUserDialogUserNameField.getText()));
+
+                //                            try {
+                //                                ProfilesService.getInstance().loadProfile(new Profile(createUserDialogUserNameField.getText()).);
+                //                            } catch (UserAuthenticationException ex) {
+                //                            }
+
+                Profile profile = ProfilesService.getInstance().getCurrentProfile();
+
+                //CRITERIONS MATRIX
+                Criterion[] criterions = new Criterion[3];
+                criterions[0] = new Criterion("Nadwozie");
+                criterions[1] = new Criterion("Kolor");
+                criterions[2] = new Criterion("Segment");
+                ComparisonMatrix criterionsMatrix = new ComparisonMatrix(criterions);
+                criterionsMatrix.setComparisonValue(criterions[1], criterions[0], 3);
+                criterionsMatrix.setComparisonValue(criterions[2], criterions[0], 5);
+                criterionsMatrix.setComparisonValue(criterions[2], criterions[1], 3);
+                profile.setCriterionsPreferences(criterionsMatrix);
+                profile.setCriterions(criterions);
+
+                //DECISIONS
+                Decision[] decisions = new Decision[0];
+                decisions = (Decision[]) DecisionsController.getInstance().loadDecisions(ProfilesService.getInstance().getCurrentProfile().getDecisionsFolder()).toArray(decisions);
+
+                profile.setDecisions(decisions);
+
+                for (Element criterion : criterions) {
+                    ComparisonMatrix comparisonMatrix = new ComparisonMatrix(decisions);
+
+                    for (int i = 0; i < decisions.length; ++i) {
+                        for (int j = i + 1; j < decisions.length; ++j) {
+                            comparisonMatrix.setComparisonValue(decisions[i], decisions[j], 1);
+                        }
+                    }
+
+                    profile.setDecisionsPreferences((Criterion) criterion, comparisonMatrix);
+                }
+
+                setComparisonPairs();
+                comparePair(0);
+
+                saveSessionMenuItem.setEnabled(true);
+                loadSessionMenuItem.setEnabled(true);
+                setCriterionsMenuItem.setEnabled(true);
+                createUserDialogUserNameField.setText("");
+                calculateMenuItem.setEnabled(true);
+
+                try {
+                    ProfilesService.getInstance().saveProfile();
+                } catch (IOException ex) {
+                    Logger.getLogger(MainWindow.class.getName()).log(Level.SEVERE, null, ex);
+                }
+
+                createProfileDialog.dispose();
+            } catch (UserRegistrationException ex) {
+                Logger.getLogger(MainWindow.class.getName()).log(Level.SEVERE, null, ex);
+                createUserDialogUserNameLabel.setForeground(new java.awt.Color(255, 0, 0));
+            }
+        } else {
+            createUserDialogUserNameLabel.setForeground(new java.awt.Color(255, 0, 0));
+        }
+    }//GEN-LAST:event_createUserDialogOkButtonActionPerformed
+
+    private void createUserDialogCancelButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_createUserDialogCancelButtonActionPerformed
+        // TODO add your handling code here:
+        createProfileDialog.dispose();
+        createUserDialogUserNameField.setText("");
+    }//GEN-LAST:event_createUserDialogCancelButtonActionPerformed
+
     private Component findComponentByName(String name, JPanel panel) {
         Component component = null;
 
         for (Component element : panel.getComponents()) {
             if (name.equals(element.getName())) {
                 component = element;
+            }else if(element instanceof JPanel){
+                Component c = findComponentByName(name, (JPanel) element);
+                component = c != null ? c : component ;
             }
         }
 
         return component;
     }
+    
+    
     private Point[] comparisonPairs;
     private int currentPair;
     private ComparisonMatrix[] comparisonMatrixes;
@@ -932,14 +971,14 @@ public class MainWindow extends javax.swing.JFrame {
     private void setComparisonPairs() {
         currentPair = 0;
         this.comparisonPairs = new Point[0];
-        Decision[] decisions = UserService.getInstance().getLoggedUser().getDecisions();
-        Criterion[] criterions = UserService.getInstance().getLoggedUser().getCriterions();
+        Decision[] decisions = ProfilesService.getInstance().getCurrentProfile().getDecisions();
+        Criterion[] criterions = ProfilesService.getInstance().getCurrentProfile().getCriterions();
         comparisonMatrixes = new ComparisonMatrix[criterions.length];
         List<Point> comparisonPairs = new LinkedList<>();
 
         for (int k = 0; k < criterions.length; ++k) {
             Criterion criterion = criterions[k];
-            comparisonMatrixes[k] = UserService.getInstance().getLoggedUser().getDecisionsPreferences(criterion) == null ? new ComparisonMatrix(decisions) : UserService.getInstance().getLoggedUser().getDecisionsPreferences(criterion);
+            comparisonMatrixes[k] = ProfilesService.getInstance().getCurrentProfile().getDecisionsPreferences(criterion) == null ? new ComparisonMatrix(decisions) : ProfilesService.getInstance().getCurrentProfile().getDecisionsPreferences(criterion);
         }
 
         for (int i = 0; i < decisions.length; ++i) {
@@ -955,16 +994,16 @@ public class MainWindow extends javax.swing.JFrame {
         comparisonPanel.removeAll();
         currentPair = index;
         try {
-            leftImagePanel.setImage(UserService.getInstance().getLoggedUser().getDecisions()[(int) comparisonPairs[index].getX()].getImage());
+            leftImagePanel.setImage(ProfilesService.getInstance().getCurrentProfile().getDecisions()[(int) comparisonPairs[index].getX()].getImage());
             leftImagePanel.repaint();
-            rightImagePanel.setImage(UserService.getInstance().getLoggedUser().getDecisions()[(int) comparisonPairs[index].getY()].getImage());
+            rightImagePanel.setImage(ProfilesService.getInstance().getCurrentProfile().getDecisions()[(int) comparisonPairs[index].getY()].getImage());
             rightImagePanel.repaint();
         } catch (IOException ex) {
             Logger.getLogger(MainWindow.class.getName()).log(Level.SEVERE, null, ex);
         }
 
-        for (int i = 0; i < UserService.getInstance().getLoggedUser().getCriterions().length; ++i) {
-            Criterion criterion = UserService.getInstance().getLoggedUser().getCriterions()[i];
+        for (int i = 0; i < ProfilesService.getInstance().getCurrentProfile().getCriterions().length; ++i) {
+            Criterion criterion = ProfilesService.getInstance().getCurrentProfile().getCriterions()[i];
 
             javax.swing.JSlider jSlider;
             javax.swing.JLabel jLabel;
@@ -1021,8 +1060,8 @@ public class MainWindow extends javax.swing.JFrame {
 
     private void saveAction() {
         // TODO add your handling code here:
-        Criterion[] criterions = UserService.getInstance().getLoggedUser().getCriterions();
-        Decision[] decisions = UserService.getInstance().getLoggedUser().getDecisions();
+        Criterion[] criterions = ProfilesService.getInstance().getCurrentProfile().getCriterions();
+        Decision[] decisions = ProfilesService.getInstance().getCurrentProfile().getDecisions();
         JSlider slider;
         double value;
 
@@ -1083,7 +1122,7 @@ public class MainWindow extends javax.swing.JFrame {
                 }
 
                 comparisonMatrixes[i].setComparisonValue(decisions[(int) comparisonPairs[currentPair].getX()], decisions[(int) comparisonPairs[currentPair].getY()], value);
-                UserService.getInstance().getLoggedUser().getDecisionsPreferences(criterions[i]).setComparisonValue(decisions[(int) comparisonPairs[currentPair].getX()], decisions[(int) comparisonPairs[currentPair].getY()], value);
+                ProfilesService.getInstance().getCurrentProfile().getDecisionsPreferences(criterions[i]).setComparisonValue(decisions[(int) comparisonPairs[currentPair].getX()], decisions[(int) comparisonPairs[currentPair].getY()], value);
             }
         }
     }
@@ -1125,37 +1164,35 @@ public class MainWindow extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenuItem calculateMenuItem;
     private javax.swing.JPanel comparisonPanel;
-    private javax.swing.JDialog createUserDialog;
+    private javax.swing.JDialog createProfileDialog;
     private javax.swing.JButton createUserDialogCancelButton;
-    private javax.swing.JPasswordField createUserDialogConfirmPasswordField;
-    private javax.swing.JLabel createUserDialogConfirmPasswordLabel;
     private javax.swing.JButton createUserDialogOkButton;
-    private javax.swing.JPasswordField createUserDialogPasswordField;
-    private javax.swing.JLabel createUserDialogPasswordLabel;
     private javax.swing.JTextField createUserDialogUserNameField;
     private javax.swing.JLabel createUserDialogUserNameLabel;
     private javax.swing.JMenuItem createUserMenuItem;
     private javax.swing.JMenuItem exitMenuOption;
     private javax.swing.JMenu fileMenu;
+    private javax.swing.JFileChooser jFileChooser1;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JList jList1;
     private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel5;
     private javax.swing.JPanel jPanel7;
+    private javax.swing.JScrollPane jScrollPane1;
     private core.v.ImagePanel leftImagePanel;
+    private javax.swing.JDialog loadProfileDialog;
     private javax.swing.JMenuItem loadSessionMenuItem;
-    private javax.swing.JDialog logInDialog;
     private javax.swing.JButton logInDialogCancelButton;
     private javax.swing.JButton logInDialogOkButton;
-    private javax.swing.JPasswordField logInDialogPasswordField;
-    private javax.swing.JLabel logInDialogPasswordLabel;
-    private javax.swing.JTextField logInDialogUserNameField;
-    private javax.swing.JLabel logInDialogUserNameLabel;
     private javax.swing.JMenuItem logInOutMenuItem;
     private javax.swing.JMenuBar menuBar;
     private javax.swing.JButton nextButton;
     private javax.swing.JMenu optionsMenu;
     private javax.swing.JButton previousButton;
+    private javax.swing.JDialog resultDialog;
+    private javax.swing.JPanel resultDialogInnerPanel;
     private core.v.ImagePanel rightImagePanel;
     private javax.swing.JMenuItem saveSessionMenuItem;
     private javax.swing.JDialog setCriterionsDialog;
